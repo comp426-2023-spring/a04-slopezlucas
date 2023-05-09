@@ -39,9 +39,10 @@ app.get('/app/rpsls/play', (req, res) => {
 app.post('/app/rps/play', (req, res) => {
     res.status(200).send(rps(req.body.shot));
 });
-app.post('/app/rpsls/play', (req, res) => {
-    res.status(200).json(req.body.shot);
-});
+app.post('/app/rpsls/play', function(req, res) {
+    const result = rpsls(req.body.shot);
+    res.status(200).json(result);
+  });
 
 //HTTP POST Params for RPS/RPSLS
 app.get('/app/rps/play/:shot', (req, res) => {
