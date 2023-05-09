@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import minimist from 'minimist';
-import { rps, rpsls } from './lib/rpsls.js';
 import express from 'express';
+import { rps, rpsls } from './lib/rpsls.js';
 
 const app = express();
 app.use(express.json());
@@ -14,46 +14,42 @@ const port = argv.port || 5000;
 app.use(express.json());
 
 //200 OK!
-app.get('/app', function(req, res) {
-    res.status(200).send("200 OK");
+app.get('/app', (req, res, next) => {
+    res.status(200).json("200 OK");
 });
 
 //200 for RPS & RPSLS
-app.get('/app/rps', function(req, res) {
-    res.status(200).send(rps());
+app.get('/app/rps', (req, res, next) => {
+    res.status(200).json(rps());
 });
-app.get('/app/rpsls', function(req, res) {
-    res.status(200).send(rpsls());
+app.get('/app/rpsls', (req, res, next) => {
+    res.status(200).json(rpsls());
 });
 
 
 //HTTP GET Query for RPS/RPSLS
-app.get('/app/rps/play', function(req, res) {
-    const player = rps(req.query.shot);
+app.get('/app/rps/play', (req, res) => {
     res.status(200).send(rps(req.query.shot));
 });
-app.get('/app/rpsls/play', function(req, res) {
-    const player = rpsls(req.query.shot);
-    res.status(200).send(player);
+app.get('/app/rpsls/play', (req, res) => {
+    res.status(200).send(rpsls(req.query.shot));
 });
 
 //HTTP POST Body for RPS/RPSLS
-app.post('/app/rps/play', function(req, res) {
-    const player = rps(req.body.shot);
-    res.status(200).send(player);
+app.post('/app/rps/play', (req, res) => {
+    res.status(200).send(rps(req.body.shot));
 });
 app.post('/app/rpsls/play', function(req, res) {
-    const player = rpsls(req.body.shot);
-    res.status(200).send(player);
+    res.status(200).send(req.body.shot);
 });
 
 //HTTP POST Params for RPS/RPSLS
-app.get('/app/rps/play/:shot', function(req, res) {
+app.get('/app/rps/play/:shot', (req, res) => {
     const player = rps(req.params.shot);
     res.status(200).send(player);
 });
 
-app.get('/app/rpsls/play/:shot', function(req, res) {
+app.get('/app/rpsls/play/:shot', (req, res) => {
     const player = rpsls(req.params.shot);
     res.status(200).send(player);
 });
